@@ -57,6 +57,7 @@ function UnitObstacle(num,scene,camera){
 UnitObstacle.prototype = new Obstacle(); //繼承
 UnitObstacle.prototype.constructor = UnitObstacle; //確立建構者
 UnitObstacle.prototype.setBlock = function(num){
+	this.block = [false,false,false,false,false,false,false,false,false];
 	this.block[num]=true;
 }
 //決定座標
