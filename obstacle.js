@@ -35,7 +35,7 @@ Obstacle.prototype.collision = function(){
 		this.effect();
 	}else if(this.cam.position.x == -40 && this.cam.position.y == -40 && this.block[6]){
 		this.effect();
-	}else if(this.cam.position.x == -40 && this.cam.position.y == 0 && this.block[7]){
+	}else if(this.cam.position.x == 0 && this.cam.position.y == -40 && this.block[7]){
 		this.effect();
 	}else if(this.cam.position.x == -40 && this.cam.position.y == -40 && this.block[8]){
 		this.effect();
