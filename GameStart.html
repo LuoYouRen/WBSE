@@ -10,7 +10,6 @@
         <script src="http://www.babylonjs.com/oimo.js"></script>
         <script src="http://www.babylonjs.com/babylon.js"></script>
 		<script src="obstacle.js"></script>
-
         <style>
             html, body {
                 overflow: hidden;
@@ -194,11 +193,11 @@
             plane1.checkCollisions = true;
 			var box1 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
 			scene.registerBeforeRender(function () {
-			
 				time += 1;
 				box1.move();
 				box1.collision();
 				if(time%100==0)box1.setPosition(Math.floor(Math.random()*9));
+
 				plane1.material.diffuseTexture.uOffset -= speed; 
 				plane2.material.diffuseTexture.uOffset += speed; 
 				plane3.material.diffuseTexture.uOffset -= speed; 
