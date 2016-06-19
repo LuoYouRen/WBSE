@@ -24,23 +24,23 @@ Obstacle.prototype.move = function(){
 //碰撞的判斷
 Obstacle.prototype.collision = function(){
 	if(Math.abs(this.position[2] - this.cam.position.z)>this.height)return;
-	if(this.cam.position.x == -40 && this.cam.position.y == 40 && this.block[0]){
+	if(this.cam.position.x <= -20 && this.cam.position.y >= 20 && this.block[0]){
 		this.effect();
-	}else if(this.cam.position.x == 0 && this.cam.position.y == 40 && this.block[1]){
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20 && this.cam.position.y >= 20 && this.block[1]){
 		this.effect();
-	}else if(this.cam.position.x == 40 && this.cam.position.y == 40 && this.block[2]){
+	}else if(this.cam.position.x >= 20 && this.cam.position.y >= 20 && this.block[2]){
 		this.effect();
-	}else if(this.cam.position.x == -40 && this.cam.position.y == 0 && this.block[3]){
+	}else if(this.cam.position.x <= -20 && this.cam.position.y <= 20&& this.cam.position.y >= -20 && this.block[3]){
 		this.effect();
-	}else if(this.cam.position.x == 0 && this.cam.position.y == 0 && this.block[4]){
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20  && this.cam.position.y <= 20&& this.cam.position.y >= -20  && this.block[4]){
 		this.effect();
-	}else if(this.cam.position.x == 40 && this.cam.position.y == 0 && this.block[5]){
+	}else if(this.cam.position.x >= 20 && this.cam.position.y <= 20&& this.cam.position.y >= -20&& this.block[5]){
 		this.effect();
-	}else if(this.cam.position.x == -40 && this.cam.position.y == -40 && this.block[6]){
+	}else if(this.cam.position.x <= -20 && this.cam.position.y <= -20 && this.block[6]){
 		this.effect();
-	}else if(this.cam.position.x == 0 && this.cam.position.y == -40 && this.block[7]){
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20 && this.cam.position.y <= -20 && this.block[7]){
 		this.effect();
-	}else if(this.cam.position.x == 40 && this.cam.position.y == -40 && this.block[8]){
+	}else if(this.cam.position.x >= 20 && this.cam.position.y <= -20 && this.block[8]){
 		this.effect();
 	}else{
 		this.passSound.play();
@@ -310,13 +310,67 @@ LObstacle.prototype.setBlock = function(num){
 		break;
 	}
 }
-function TObstacle(num){
-	Obstacle.call(this);
+function TObstacle(num,scene,camera){
+	Obstacle.call(this,scene,camera);
 	this.setBlock(num);
+	this.mesh = new Array(2);
+	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.position=[-40,0,-50];
+	this.position_=[0,40,-50];
+	this.draw();
 }
 TObstacle.prototype = new Obstacle(); //繼承
 TObstacle.prototype.constructor = TObstacle; //確立建構者
+
+TObstacle.prototype.draw = function(){
+	var materialT = new BABYLON.StandardMaterial("T", this.scene);
+	materialT.diffuseColor = new BABYLON.Color3(0.9, 0.0, 0.5);//purple
+	materialT.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	this.mesh[0] = new BABYLON.Mesh.CreateBox("T",30,this.scene);
+	this.mesh[1] = new BABYLON.Mesh.CreateBox("T",30,this.scene);
+	this.mesh[0].material = materialT;
+	this.mesh[1].material = materialT;
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.mesh[0].scaling = new BABYLON.Vector3(6,1,1);
+	this.mesh[1].scaling = new BABYLON.Vector3(1,6,1);
+}
+TObstacle.prototype.move = function(){
+	this.position[0] = this.position[0]+this.dir[0]*this.speed;
+	this.position[1] = this.position[1]+this.dir[1]*this.speed;
+	this.position[2] = this.position[2]+this.dir[2]*this.speed;
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.position_[0] += this.dir[0]*this.speed;
+	this.position_[1] += this.dir[1]*this.speed;
+	this.position_[2] += this.dir[2]*this.speed;
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+}
+TObstacle.prototype.setPosition = function(num){
+	this.setBlock(num);
+		switch(num){
+		case 0: //下  先橫的再直的
+			this.position_ = [0,40,far];
+			this.position = [0,0,far];
+		break;
+		case 1: //右
+			this.position_ = [0,0,far];
+			this.position = [-40,0,far];
+		break;
+		case 2: //上
+			this.position_ = [0,-40,far];
+			this.position = [0,0,far];
+		break;
+		case 3: //左
+			this.position_ = [0,0,far];
+			this.position = [40,0,far];
+		break;
+	}
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+}
 TObstacle.prototype.setBlock = function(num){
+	this.block = [false,false,false,false,false,false,false,false,false];
 	switch(num){
 		case 0: //下
 			this.block[0] = true;
@@ -348,3 +402,49 @@ TObstacle.prototype.setBlock = function(num){
 		break;
 	}
 }
+function CrossObstacle(scene,camera){
+	Obstacle.call(this,scene,camera);
+	this.setBlock();
+	this.mesh = new Array(2);
+	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.position=[0,0,-50];
+	this.position_=[0,0,-50];
+	this.draw();
+}
+CrossObstacle.prototype = new Obstacle(); //繼承
+CrossObstacle.prototype.constructor = CrossObstacle; //確立建構者
+
+CrossObstacle.prototype.draw = function(){
+	var materialCross = new BABYLON.StandardMaterial("Cross", this.scene);
+	materialCross.diffuseColor = new BABYLON.Color3(0.0, 0.9, 0.9);//purple
+	materialCross.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	this.mesh[0] = new BABYLON.Mesh.CreateBox("Cross",30,this.scene);
+	this.mesh[1] = new BABYLON.Mesh.CreateBox("Cross",30,this.scene);
+	this.mesh[0].material = materialCross;
+	this.mesh[1].material = materialCross;
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.mesh[0].scaling = new BABYLON.Vector3(6,1,1);
+	this.mesh[1].scaling = new BABYLON.Vector3(1,6,1);
+}
+CrossObstacle.prototype.move = function(){
+	this.position[0] = this.position[0]+this.dir[0]*this.speed;
+	this.position[1] = this.position[1]+this.dir[1]*this.speed;
+	this.position[2] = this.position[2]+this.dir[2]*this.speed;
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.position_[0] += this.dir[0]*this.speed;
+	this.position_[1] += this.dir[1]*this.speed;
+	this.position_[2] += this.dir[2]*this.speed;
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+}
+CrossObstacle.prototype.setPosition = function(){
+	this.position=[0,0,far];
+	this.position_=[0,0,far];
+	this.mesh[1].position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
+	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
+}
+CrossObstacle.prototype.setBlock = function(){
+	this.block = [false,true,false,true,true,true,false,true,false];
+}
+
