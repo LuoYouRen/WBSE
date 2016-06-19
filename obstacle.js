@@ -1,7 +1,8 @@
-const far = 2000;
+const far = 6000;
+
 function Obstacle(scene,camera){
 	this.height = 30; //物體高度
-	this.speed = 10; //物體速度
+	this.speed = 60; //物體速度
 	this.dir = [0,0,-1];
 	this.scene = scene;
 	this.cam = camera;
@@ -10,6 +11,7 @@ function Obstacle(scene,camera){
 	this.obj;
 	this.block = [false,false,false,false,false,false,false,false,false];
 }
+
 
 //移動
 Obstacle.prototype.move = function(){
@@ -40,12 +42,15 @@ Obstacle.prototype.collision = function(){
 		this.effect();
 	}else if(this.cam.position.x == 40 && this.cam.position.y == -40 && this.block[8]){
 		this.effect();
+	}else{
+		this.passSound.play();
 	}
 	
 }
 //碰撞之後的效果
 Obstacle.prototype.effect = function(){
 	console.log(this.position);
+	this.collisionSound.play();
 }
 //只佔一個格子的物件
 function UnitObstacle(num,scene,camera){
@@ -59,6 +64,8 @@ UnitObstacle.prototype.constructor = UnitObstacle; //確立建構者
 UnitObstacle.prototype.setBlock = function(num){
 	this.block = [false,false,false,false,false,false,false,false,false];
 	this.block[num]=true;
+	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 }
 //決定座標
 UnitObstacle.prototype.setPosition = function(num){ 
@@ -89,7 +96,7 @@ UnitObstacle.prototype.setPosition = function(num){
 			this.position = [0,-40,far];
 		break;
 		case 8:
-			this.position = [-40,-40,far];
+			this.position = [40,-40,far];
 		break;
 	}
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
@@ -109,6 +116,8 @@ function RodObstacle(num,scene,camera){
 	Obstacle.call(this,scene,camera);
 	this.setBlock(num);
 	this.draw(num);
+	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 	//this.setPosition(num);
 }
 RodObstacle.prototype = new Obstacle(); //繼承
