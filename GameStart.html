@@ -44,12 +44,16 @@
             var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);     
 			var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 100), scene);     
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
-			camera.attachControl(canvas, true);
-			
+			camera.attachControl(canvas, true);			
 			camera.keysUp    = []; 
 			camera.keysDown  = []; 
 			camera.keysLeft  = []; 
 			camera.keysRight = []; 		
+			
+			var music = new BABYLON.Sound("BGM", "sounds/BGM.wav", scene, function () {		
+				music.play();			
+			});			
+			music.loop = true;	
 			
 		
 			window.addEventListener("keydown", function (evt) {
@@ -201,7 +205,7 @@
 				rod1.move();
 				box1.collision();
 				rod1.collision();
-				if(time%200==0){
+				if(time%200 == 0){
 					var whichObstacle = Math.floor(Math.random()*2);
 					switch(whichObstacle){
 						case 0:
