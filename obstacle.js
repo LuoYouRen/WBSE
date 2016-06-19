@@ -61,6 +61,7 @@ UnitObstacle.prototype.setBlock = function(num){
 }
 //決定座標
 UnitObstacle.prototype.setPosition = function(num){ 
+	this.setBlock(num);
 	switch(num){
 		case 0:
 			this.position = [-40,40,900];
