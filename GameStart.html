@@ -41,15 +41,16 @@
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
 			scene.clearColor = new BABYLON.Color3(0.005, 0.005, 0.005);
-            var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 150), scene);        
+            var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);     
+			var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 100), scene);     
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
-		//	camera.attachControl(canvas, true);
-			/*
-			camera.keysUp    = [87]; // W
-			camera.keysDown  = [83]; // S
-			camera.keysLeft  = [65]; // A
-			camera.keysRight = [68]; // D			
-			*/
+			camera.attachControl(canvas, true);
+			
+			camera.keysUp    = []; 
+			camera.keysDown  = []; 
+			camera.keysLeft  = []; 
+			camera.keysRight = []; 		
+			
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
@@ -192,17 +193,31 @@
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
 			var box1 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
+			var rod1 = new RodObstacle(Math.floor(Math.random()*8),scene,camera);
+			
 			scene.registerBeforeRender(function () {
 				time += 1;
 				box1.move();
+				rod1.move();
 				box1.collision();
-				if(time%100==0)box1.setPosition(Math.floor(Math.random()*9));
+				rod1.collision();
+				if(time%200==0){
+					var whichObstacle = Math.floor(Math.random()*2);
+					switch(whichObstacle){
+						case 0:
+							box1.setPosition(Math.floor(Math.random()*9));
+						break;
+						case 1:
+							rod1.setPosition(Math.floor(Math.random()*8));
+						break;
+					}
+				}
 
 				plane1.material.diffuseTexture.uOffset -= speed; 
 				plane2.material.diffuseTexture.uOffset -= speed; 
 				plane3.material.diffuseTexture.uOffset -= speed; 
 				plane4.material.diffuseTexture.uOffset -= speed; 
-				if(speed < 0.05){
+				if(speed < 0.09){
 						speed += 0.001;
 				}				
 				if(camera.position.x>=step)camera.position.x=step;
