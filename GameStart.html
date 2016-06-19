@@ -32,11 +32,12 @@
         var canvas = document.getElementById("renderCanvas");
         var engine = new BABYLON.Engine(canvas, true);
 		var time = 0;
-		var speed = 0; 
+		var speed = 0.09; 
 		var isCanMove = true;
 		var moveTime = 0;
 		const step = 40;
 		const move_fps= 10;
+		var stage = ["brick1", "brick2", "dirt", "metal", "rock1", "rock2", "rock3"];
 		
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
@@ -44,12 +45,6 @@
             var light = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 150), scene);        
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
 		//	camera.attachControl(canvas, true);
-			/*
-			camera.keysUp    = [87]; // W
-			camera.keysDown  = [83]; // S
-			camera.keysLeft  = [65]; // A
-			camera.keysRight = [68]; // D			
-			*/
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
@@ -141,7 +136,7 @@
 			plane1.scaling.x = 50;
             plane1.material = new BABYLON.StandardMaterial("plane1", scene);
             plane1.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane1.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);		
+			plane1.material.diffuseTexture = new BABYLON.Texture("textures/" + stage[0] + ".jpg", scene);		
 			plane1.material.diffuseTexture.uScale = 50.0;
 			plane1.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane1.material.backFaceCulling = false;
@@ -153,19 +148,19 @@
 			plane2.scaling.x = 50;
             plane2.material = new BABYLON.StandardMaterial("plane2", scene);
             plane2.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane2.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane2.material.diffuseTexture = new BABYLON.Texture("textures/" + stage[0] + ".jpg", scene);
 			plane2.material.diffuseTexture.uScale = 50.0;
 			plane2.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane2.material.backFaceCulling = false;
             plane2.position = new BABYLON.Vector3(-60, 0, 2000);
-            plane2.rotation = new BABYLON.Vector3(0, -Math.PI / 2, 0);
+            plane2.rotation = new BABYLON.Vector3(0, -Math.PI / 2, Math.PI);
 			
 			//+Y plane
             var plane3 = BABYLON.Mesh.CreatePlane("plane3", 120.0, scene);
 			plane3.scaling.x = 50;
             plane3.material = new BABYLON.StandardMaterial("plane3", scene);
             plane3.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane3.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane3.material.diffuseTexture = new BABYLON.Texture("textures/" + stage[0] + ".jpg", scene);
 			plane3.material.diffuseTexture.uScale = 50.0;
 			plane3.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane3.material.backFaceCulling = false;
@@ -177,7 +172,7 @@
 			plane4.scaling.x = 50;
             plane4.material = new BABYLON.StandardMaterial("plane4", scene);
             plane4.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane4.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane4.material.diffuseTexture = new BABYLON.Texture("textures/" + stage[0] + ".jpg", scene);
 			plane4.material.diffuseTexture.uScale = 50.0;
 			plane4.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane4.material.backFaceCulling = false;
@@ -199,12 +194,10 @@
 				if(time%100==0)box1.setPosition(Math.floor(Math.random()*9));
 
 				plane1.material.diffuseTexture.uOffset -= speed; 
-				plane2.material.diffuseTexture.uOffset += speed; 
+				plane2.material.diffuseTexture.uOffset -= speed; 
 				plane3.material.diffuseTexture.uOffset -= speed; 
 				plane4.material.diffuseTexture.uOffset -= speed; 
-				if(speed < 0.05){
-						speed += 0.001;
-				}				
+				
 				if(camera.position.x>=step)camera.position.x=step;
 				if(camera.position.x<=-step)camera.position.x=-step;
 				if(camera.position.y>=step)camera.position.y=step;
