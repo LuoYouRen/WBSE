@@ -1,10 +1,11 @@
+const far = 10000;
 function Obstacle(scene,camera){
 	this.height = 30; //物體高度
-	this.speed = 20; //物體速度
+	this.speed = 100; //物體速度
 	this.dir = [0,0,-1];
 	this.scene = scene;
 	this.cam = camera;
-	this.position = [0,0,2000];
+	this.position = [0,0,far];
 	this.mesh;
 	this.obj;
 	this.block = [false,false,false,false,false,false,false,false,false];
@@ -65,31 +66,31 @@ UnitObstacle.prototype.setPosition = function(num){
 	this.setBlock(num);
 	switch(num){
 		case 0:
-			this.position = [-40,40,2000];
+			this.position = [-40,40,far];
 		break;
 		case 1:
-			this.position = [0,40,2000];
+			this.position = [0,40,far];
 		break;
 		case 2:
-			this.position = [40,40,2000];
+			this.position = [40,40,far];
 		break;
 		case 3:
-			this.position = [-40,0,2000];
+			this.position = [-40,0,far];
 		break;
 		case 4:
-			this.position = [0,0,2000];
+			this.position = [0,0,far];
 		break;
 		case 5:
-			this.position = [40,0,2000];
+			this.position = [40,0,far];
 		break;
 		case 6:
-			this.position = [-40,-40,2000];
+			this.position = [-40,-40,far];
 		break;
 		case 7:
-			this.position = [0,-40,900];
+			this.position = [0,-40,far];
 		break;
 		case 8:
-			this.position = [-40,-40,900];
+			this.position = [-40,-40,far];
 		break;
 	}
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
