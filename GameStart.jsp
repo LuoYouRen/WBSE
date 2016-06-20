@@ -1,4 +1,6 @@
-<!DOCTYPE html>
+<%@ page contentType="text/html" pageEncoding="UTF-8"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
@@ -33,23 +35,36 @@
         var engine = new BABYLON.Engine(canvas, true);
 		var time = 0;
 		var speed = 0; 
+		var stage = ${answer};
+		var background;
 		var isCanMove = true;
 		var moveTime = 0;
 		const step = 40;
 		const move_fps= 10;
 		
+		switch(stage){
+			case 1:
+				background = "brick1";
+			break;				
+			case 2:
+				background = "metal";
+			break;
+			case 3:
+				background = "dirt";
+			break;
+			
+		}
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
 			scene.clearColor = new BABYLON.Color3(0.005, 0.005, 0.005);
             var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);     
 			var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 100), scene);     
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
-			camera.attachControl(canvas, true);			
+		//	camera.attachControl(canvas, true);			
 			camera.keysUp    = []; 
 			camera.keysDown  = []; 
 			camera.keysLeft  = []; 
 			camera.keysRight = []; 		
-			
 			var music = new BABYLON.Sound("BGM", "sounds/BGM.wav", scene, function () {		
 				music.setVolume(0.5);
 				music.play();			
@@ -147,7 +162,7 @@
 			plane1.scaling.x = 50;
             plane1.material = new BABYLON.StandardMaterial("plane1", scene);
             plane1.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane1.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);		
+			plane1.material.diffuseTexture = new BABYLON.Texture("textures/" + background + ".jpg", scene);		
 			plane1.material.diffuseTexture.uScale = 50.0;
 			plane1.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane1.material.backFaceCulling = false;
@@ -159,7 +174,7 @@
 			plane2.scaling.x = 50;
             plane2.material = new BABYLON.StandardMaterial("plane2", scene);
             plane2.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane2.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane2.material.diffuseTexture = new BABYLON.Texture("textures/" + background + ".jpg", scene);
 			plane2.material.diffuseTexture.uScale = 50.0;
 			plane2.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane2.material.backFaceCulling = false;
@@ -171,7 +186,7 @@
 			plane3.scaling.x = 50;
             plane3.material = new BABYLON.StandardMaterial("plane3", scene);
             plane3.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane3.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane3.material.diffuseTexture = new BABYLON.Texture("textures/" + background + ".jpg", scene);
 			plane3.material.diffuseTexture.uScale = 50.0;
 			plane3.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane3.material.backFaceCulling = false;
@@ -183,7 +198,7 @@
 			plane4.scaling.x = 50;
             plane4.material = new BABYLON.StandardMaterial("plane4", scene);
             plane4.material.diffuseColor = new BABYLON.Color3(1, 1, 1);
-			plane4.material.diffuseTexture = new BABYLON.Texture("textures/brick1.jpg", scene);
+			plane4.material.diffuseTexture = new BABYLON.Texture("textures/" + background + ".jpg", scene);
 			plane4.material.diffuseTexture.uScale = 50.0;
 			plane4.material.specularColor = new BABYLON.Color3(0.00, 0.00, 0.00);
             plane4.material.backFaceCulling = false;
@@ -198,6 +213,8 @@
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
 			var box1 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
+			var box2 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
+			var box3 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
 			var rod1 = new RodObstacle(Math.floor(Math.random()*8),scene,camera);
 			var L1 = new LObstacle(Math.floor(Math.random()*4),scene,camera);
 			var T1 = new TObstacle(Math.floor(Math.random()*4),scene,camera);
@@ -205,6 +222,8 @@
 			scene.registerBeforeRender(function () {
 				time += 1;
 				box1.move();
+				box2.move();
+				box3.move();
 				rod1.move();
 				L1.move();
 				T1.move();
@@ -214,24 +233,70 @@
 				L1.collision();
 				T1.collision();
 				cross.collision();
-				if(time%40 == 0){					
-					var whichObstacle = Math.floor(Math.random()*5);
-					switch(whichObstacle){
-						case 0:
-							box1.setPosition(Math.floor(Math.random()*9));
-						break;
-						case 1:
-							rod1.setPosition(Math.floor(Math.random()*8));
-						break;
-						case 2:
-							T1.setPosition(Math.floor(Math.random()*4));
-						break;
-						case 3:
-							L1.setPosition(Math.floor(Math.random()*4));
-						break;
-						case 4:
-							cross.setPosition();
-						break;
+				if(time%60 == 0){					
+					if(stage == 1){
+						var whichObstacle = Math.floor(Math.random()*5);
+						switch(whichObstacle){
+							case 0:
+								box1.setPosition(Math.floor(Math.random()*9));
+								box2.setPosition(Math.floor(Math.random()*9));
+								box3.setPosition(Math.floor(Math.random()*9));
+							break;					
+							case 1:
+								rod1.setPosition(Math.floor(Math.random()*8));
+							break;
+							case 2:
+								T1.setPosition(Math.floor(Math.random()*4));	
+							break;
+							case 3:
+								L1.setPosition(Math.floor(Math.random()*4));
+							break;
+							case 4:
+								cross.setPosition();
+							break;
+						}
+					}
+					else if(stage == 2){
+						var whichObstacle = Math.floor(Math.random()*4);
+						switch(whichObstacle){
+							case 0:
+								box1.setPosition(Math.floor(Math.random()*9));
+								rod1.setPosition(Math.floor(Math.random()*8));
+							break;					
+							case 1:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								T1.setPosition(Math.floor(Math.random()*4));							
+							break;
+							case 2:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								L1.setPosition(Math.floor(Math.random()*4));
+							break;
+							case 3:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								cross.setPosition();
+							break;
+						}
+					}
+					else if(stage == 3){
+						var whichObstacle = Math.floor(Math.random()*4);
+						switch(whichObstacle){
+							case 0:
+								box1.setPosition(Math.floor(Math.random()*9));
+								rod1.setPosition(Math.floor(Math.random()*8));
+							break;					
+							case 1:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								T1.setPosition(Math.floor(Math.random()*4));							
+							break;
+							case 2:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								L1.setPosition(Math.floor(Math.random()*4));
+							break;
+							case 3:
+								rod1.setPosition(Math.floor(Math.random()*8));
+								cross.setPosition();
+							break;
+						}
 					}
 				}
 

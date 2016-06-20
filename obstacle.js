@@ -1,4 +1,4 @@
-const far = 6000;
+const far = 3000;
 
 function Obstacle(scene,camera){
 	this.height = 30; //物體高度
@@ -6,7 +6,7 @@ function Obstacle(scene,camera){
 	this.dir = [0,0,-1];
 	this.scene = scene;
 	this.cam = camera;
-	this.position = [0,0,-50];
+	this.position = [0,0,0];
 	this.mesh;
 	this.obj;
 	this.block = [false,false,false,false,false,false,false,false,false];
@@ -106,7 +106,7 @@ UnitObstacle.prototype.draw = function(){
 	var materialBox = new BABYLON.StandardMaterial("box", this.scene);
 	materialBox.diffuseColor = new BABYLON.Color3(0.3, 0.9, 0.3);//Green
 	materialBox.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
-	this.mesh = new BABYLON.Mesh.CreateBox("box",30,this.scene);
+	this.mesh = new BABYLON.Mesh.CreateBox("box",40,this.scene);
 	this.mesh.material = materialBox;
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	
@@ -127,7 +127,7 @@ RodObstacle.prototype.draw = function(num){
 	var materialRod = new BABYLON.StandardMaterial("rod", this.scene);
 	materialRod.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.9);//blue
 	materialRod.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
-	this.mesh = new BABYLON.Mesh.CreateBox("rod",30,this.scene);
+	this.mesh = new BABYLON.Mesh.CreateBox("rod",40,this.scene);
 	this.mesh.material = materialRod;
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	
@@ -160,14 +160,14 @@ RodObstacle.prototype.setPosition = function(num){
 	}
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	if(num<3){
-		this.mesh.scaling = new BABYLON.Vector3(6,0.5,0.5);
+		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
 	}else if(num<6){
-		this.mesh.scaling = new BABYLON.Vector3(0.5,6,0.5);
+		this.mesh.scaling = new BABYLON.Vector3(1,6,1);
 	}else if(num==6){
-		this.mesh.scaling = new BABYLON.Vector3(6,0.5,0.5);
+		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
 		this.mesh.rotation.z = Math.PI/4*3;
 	}else if(num==7){
-		this.mesh.scaling = new BABYLON.Vector3(6,0.5,0.5);
+		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
 		this.mesh.rotation.z = Math.PI/4;
 	}
 }
@@ -235,8 +235,8 @@ LObstacle.prototype.draw = function(){
 	var materialL = new BABYLON.StandardMaterial("L", this.scene);
 	materialL.diffuseColor = new BABYLON.Color3(0.1, 0.5, 0.5);//blue
 	materialL.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
-	this.mesh[0] = new BABYLON.Mesh.CreateBox("L",30,this.scene);
-	this.mesh[1] = new BABYLON.Mesh.CreateBox("L",30,this.scene);
+	this.mesh[0] = new BABYLON.Mesh.CreateBox("L",40,this.scene);
+	this.mesh[1] = new BABYLON.Mesh.CreateBox("L",40,this.scene);
 	this.mesh[0].material = materialL;
 	this.mesh[1].material = materialL;
 	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
@@ -327,8 +327,8 @@ TObstacle.prototype.draw = function(){
 	var materialT = new BABYLON.StandardMaterial("T", this.scene);
 	materialT.diffuseColor = new BABYLON.Color3(0.9, 0.0, 0.5);//purple
 	materialT.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
-	this.mesh[0] = new BABYLON.Mesh.CreateBox("T",30,this.scene);
-	this.mesh[1] = new BABYLON.Mesh.CreateBox("T",30,this.scene);
+	this.mesh[0] = new BABYLON.Mesh.CreateBox("T",40,this.scene);
+	this.mesh[1] = new BABYLON.Mesh.CreateBox("T",40,this.scene);
 	this.mesh[0].material = materialT;
 	this.mesh[1].material = materialT;
 	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
@@ -419,8 +419,8 @@ CrossObstacle.prototype.draw = function(){
 	var materialCross = new BABYLON.StandardMaterial("Cross", this.scene);
 	materialCross.diffuseColor = new BABYLON.Color3(0.0, 0.9, 0.9);//purple
 	materialCross.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
-	this.mesh[0] = new BABYLON.Mesh.CreateBox("Cross",30,this.scene);
-	this.mesh[1] = new BABYLON.Mesh.CreateBox("Cross",30,this.scene);
+	this.mesh[0] = new BABYLON.Mesh.CreateBox("Cross",40,this.scene);
+	this.mesh[1] = new BABYLON.Mesh.CreateBox("Cross",40,this.scene);
 	this.mesh[0].material = materialCross;
 	this.mesh[1].material = materialCross;
 	this.mesh[0].position = new BABYLON.Vector3(this.position_[0], this.position_[1], this.position_[2]);
