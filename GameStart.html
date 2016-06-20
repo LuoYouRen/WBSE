@@ -51,7 +51,6 @@
 			camera.keysRight = []; 		
 			
 			var music = new BABYLON.Sound("BGM", "sounds/BGM.wav", scene, function () {		
-				music.setVolume(0.5);
 				music.play();			
 			});			
 			music.loop = true;	
@@ -92,7 +91,7 @@
 				easingFunction.setEasingMode(BABYLON.EasingFunction.EASINGMODE_EASEINOUT);
 				switch(act){
 					case 'w':
-						var w = new BABYLON.Animation("w", "position.y",300, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+						var w = new BABYLON.Animation("w", "position.y",100, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
 						keys.push({ frame: 0, value: cam.position.y });
 						keys.push({ frame: move_fps, value: cam.position.y+=step});
@@ -104,7 +103,7 @@
 						});			
 					break;
 					case 'a':
-						var a = new BABYLON.Animation("s", "position.x", 300, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+						var a = new BABYLON.Animation("s", "position.x", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
 						keys.push({ frame: 0, value: cam.position.x });
 						keys.push({ frame: move_fps, value: cam.position.x-=step });
@@ -116,7 +115,7 @@
 						});
 					break;
 					case 's':
-						var s = new BABYLON.Animation("s", "position.y", 300, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+						var s = new BABYLON.Animation("s", "position.y", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
 						keys.push({ frame: 0, value: cam.position.y });
 						keys.push({ frame: move_fps, value: cam.position.y-=step });
@@ -128,7 +127,7 @@
 						});
 					break;
 					case 'd':
-						var d = new BABYLON.Animation("d", "position.x", 300, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+						var d = new BABYLON.Animation("d", "position.x", 60, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
 						keys.push({ frame: 0, value: cam.position.x });
 						keys.push({ frame: move_fps, value: cam.position.x+=step });
@@ -197,40 +196,38 @@
         
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
-			var box1 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
-			var rod1 = new RodObstacle(Math.floor(Math.random()*8),scene,camera);
-			var L1 = new LObstacle(Math.floor(Math.random()*4),scene,camera);
-			var T1 = new TObstacle(Math.floor(Math.random()*4),scene,camera);
-			var cross = new CrossObstacle(scene,camera);
+			QQ = new Obstacles(scene,camera);
+			for(var i = 0; i < 2 ; i++){
+				QQ.newObstacle('u');
+				QQ.newObstacle('u');
+				QQ.newObstacle('u');
+				QQ.newObstacle('r');
+				QQ.newObstacle('l');
+				QQ.newObstacle('t');
+				QQ.newObstacle('c');
+			}
 			scene.registerBeforeRender(function () {
 				time += 1;
-				box1.move();
-				rod1.move();
-				L1.move();
-				T1.move();
-				cross.move();
-				box1.collision();
-				rod1.collision();
-				L1.collision();
-				T1.collision();
-				cross.collision();
-				if(time%40 == 0){					
+				QQ.moveAndCollision();
+				if(time%60 == 0){
 					var whichObstacle = Math.floor(Math.random()*5);
 					switch(whichObstacle){
 						case 0:
-							box1.setPosition(Math.floor(Math.random()*9));
+							QQ.setPosition('u');
+							QQ.setPosition('u');
+							QQ.setPosition('u');
 						break;
 						case 1:
-							rod1.setPosition(Math.floor(Math.random()*8));
+							QQ.setPosition('r');
 						break;
 						case 2:
-							T1.setPosition(Math.floor(Math.random()*4));
+							QQ.setPosition('l');
 						break;
 						case 3:
-							L1.setPosition(Math.floor(Math.random()*4));
+							QQ.setPosition('t');
 						break;
 						case 4:
-							cross.setPosition();
+							QQ.setPosition('c');
 						break;
 					}
 				}
