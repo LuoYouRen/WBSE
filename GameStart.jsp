@@ -227,7 +227,7 @@
         
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
-			block = new Obstacles(scene,camera);
+			block = new Obstacles(scene,camera,background);
 			for(var i = 0; i < 3 ; i++){
 				block.newObstacle('u');
 				block.newObstacle('u');

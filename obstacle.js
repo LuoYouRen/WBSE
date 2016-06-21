@@ -1,6 +1,7 @@
 const far = 6000;
 var isCanMove = true;
-function Obstacles(scene,camera){
+function Obstacles(scene,camera,background){
+	this.background = background;
 	this.scene = scene;
 	this.camera = camera;
 	this.array = new Array();
@@ -9,7 +10,7 @@ function Obstacles(scene,camera){
 	this.lArray = new Array();
 	this.tArray = new Array();
 	this.crossArray = new Array();
-	
+	this.heart = 3;
 }
 Obstacles.prototype.newObstacle = function(type){
 	var length = this.array.length;
@@ -19,19 +20,19 @@ Obstacles.prototype.newObstacle = function(type){
 			this.unitArray[this.unitArray.length] = this.array[length];
 		break;
 		case 'r':
-			this.array[length] = new RodObstacle(0,this.scene,this.camera);
+			this.array[length] = new RodObstacle(0,this.scene,this.camera,this.background);
 			this.rodArray[this.rodArray.length] = this.array[length];
 		break;
 		case 'l':
-			this.array[length] = new LObstacle(0,this.scene,this.camera);
+			this.array[length] = new LObstacle(0,this.scene,this.camera,this.background);
 			this.lArray[this.lArray.length] = this.array[length];
 		break;
 		case 't':
-			this.array[length] = new TObstacle(0,this.scene,this.camera);
+			this.array[length] = new TObstacle(0,this.scene,this.camera,this.background);
 			this.tArray[this.tArray.length] = this.array[length];
 		break;
 		case 'c':
-			this.array[length] = new CrossObstacle(this.scene,this.camera);
+			this.array[length] = new CrossObstacle(this.scene,this.camera,this.background);
 			this.crossArray[this.crossArray.length] = this.array[length];
 		break;
 	}
@@ -49,6 +50,15 @@ Obstacles.prototype.setPosition = function(type){
 				if(this.unitArray[i].position[2]>=0)continue;
 				else{
 					this.unitArray[i].setPosition(Math.floor(Math.random()*9));
+					for(var j = 0 ; j <this.unitArray.length;j++){
+						if(j==i)continue;
+						if(this.unitArray[i].position[0]==this.unitArray[j].position[0] &&
+							this.unitArray[i].position[1]==this.unitArray[j].position[1] &&
+							this.unitArray[i].position[2]==this.unitArray[j].position[2]){
+								this.unitArray[i].setPosition(Math.floor(Math.random()*9));
+								j=0;
+							}
+					}
 					break;
 				}
 			}
@@ -143,7 +153,8 @@ Obstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 Obstacle.prototype.effect = function(){
-	console.log(this);
+	//console.log(this);
+	if(this.heart>0)this.heart--;
 	this.collisionSound.play();
 }
 //只佔一個格子的物件
@@ -200,6 +211,7 @@ UnitObstacle.prototype.draw = function(){
 	var materialBox = new BABYLON.StandardMaterial("box", this.scene);
 	materialBox.diffuseColor = new BABYLON.Color3(1.0, 1.0, 1.0);//Green
 	materialBox.specularColor = new BABYLON.Color3(0.3, 0.3, 0.3);// 0
+	materialBox.diffuseTexture = new BABYLON.Texture("textures/crate.jpg", this.scene);
 	materialBox.alpha = 0.4;
 	this.mesh = new BABYLON.Mesh.CreateBox("box",40,this.scene);
 	this.mesh.material = materialBox;
@@ -237,7 +249,7 @@ UnitObstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 UnitObstacle.prototype.effect = function(){
-	console.log(this);
+	//console.log(this);
 	isCanMove = false;
 	var yaw = new BABYLON.Animation("yaw", "rotation.y", 1, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
@@ -249,16 +261,15 @@ UnitObstacle.prototype.effect = function(){
 						keys.push({ frame: 5, value: Math.PI/-64 });
 						keys.push({ frame: 6, value: Math.PI/64 });
 						keys.push({ frame: 7, value: Math.PI/-64 });
-						keys.push({ frame: 8, value: Math.PI/64 });
-						keys.push({ frame: 9, value: Math.PI/-64 });
-						keys.push({ frame: 10,value: 0 });
+						keys.push({ frame: 8,value: 0 });
 						yaw.setKeys(keys);
 						this.cam.animations.push(yaw);		
 						this.scene.beginAnimation(this.cam, 0, 11 , false , 11, function(){isCanMove=true;});
 	//this.collisionSound.play();
 }
 //棒狀障礙物
-function RodObstacle(num,scene,camera){
+function RodObstacle(num,scene,camera,background){
+	this.background = background;
 	Obstacle.call(this,scene,camera);
 	this.setBlock(num);
 	this.draw(num);
@@ -271,8 +282,9 @@ RodObstacle.prototype.constructor = RodObstacle; //確立建構者
 
 RodObstacle.prototype.draw = function(num){
 	var materialRod = new BABYLON.StandardMaterial("rod", this.scene);
-	materialRod.diffuseColor = new BABYLON.Color3(0.1, 0.1, 0.9);//blue
+	materialRod.diffuseColor = new BABYLON.Color3(1, 1, 1);//blue
 	materialRod.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialRod.diffuseTexture = new BABYLON.Texture("textures/" + this.background + ".jpg", this.scene);
 	this.mesh = new BABYLON.Mesh.CreateBox("rod",40,this.scene);
 	this.mesh.material = materialRod;
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
@@ -363,7 +375,8 @@ RodObstacle.prototype.setBlock = function(num){
 	}
 }
 //L型障礙物
-function LObstacle(num,scene,camera){
+function LObstacle(num,scene,camera,background){
+	this.background= background;
 	Obstacle.call(this,scene,camera);
 	this.setBlock(num);
 	this.mesh = new Array(2);
@@ -379,8 +392,9 @@ LObstacle.prototype.constructor = LObstacle; //確立建構者
 
 LObstacle.prototype.draw = function(){
 	var materialL = new BABYLON.StandardMaterial("L", this.scene);
-	materialL.diffuseColor = new BABYLON.Color3(0.1, 0.5, 0.5);//blue
+	materialL.diffuseColor = new BABYLON.Color3(1, 1, 1);//blue
 	materialL.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialL.diffuseTexture = new BABYLON.Texture("textures/" + this.background + ".jpg", this.scene);
 	this.mesh[0] = new BABYLON.Mesh.CreateBox("L",40,this.scene);
 	this.mesh[1] = new BABYLON.Mesh.CreateBox("L",40,this.scene);
 	this.mesh[0].material = materialL;
@@ -456,7 +470,8 @@ LObstacle.prototype.setBlock = function(num){
 		break;
 	}
 }
-function TObstacle(num,scene,camera){
+function TObstacle(num,scene,camera,background){
+	this.background = background;
 	Obstacle.call(this,scene,camera);
 	this.setBlock(num);
 	this.mesh = new Array(2);
@@ -471,8 +486,9 @@ TObstacle.prototype.constructor = TObstacle; //確立建構者
 
 TObstacle.prototype.draw = function(){
 	var materialT = new BABYLON.StandardMaterial("T", this.scene);
-	materialT.diffuseColor = new BABYLON.Color3(0.9, 0.0, 0.5);//purple
+	materialT.diffuseColor = new BABYLON.Color3(1, 1, 1);//purple
 	materialT.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialT.diffuseTexture = new BABYLON.Texture("textures/" + this.background + ".jpg", this.scene);
 	this.mesh[0] = new BABYLON.Mesh.CreateBox("T",40,this.scene);
 	this.mesh[1] = new BABYLON.Mesh.CreateBox("T",40,this.scene);
 	this.mesh[0].material = materialT;
@@ -548,7 +564,8 @@ TObstacle.prototype.setBlock = function(num){
 		break;
 	}
 }
-function CrossObstacle(scene,camera){
+function CrossObstacle(scene,camera,background){
+	this.background = background;
 	Obstacle.call(this,scene,camera);
 	this.setBlock();
 	this.mesh = new Array(2);
@@ -563,8 +580,9 @@ CrossObstacle.prototype.constructor = CrossObstacle; //確立建構者
 
 CrossObstacle.prototype.draw = function(){
 	var materialCross = new BABYLON.StandardMaterial("Cross", this.scene);
-	materialCross.diffuseColor = new BABYLON.Color3(0.0, 0.9, 0.9);//purple
+	materialCross.diffuseColor = new BABYLON.Color3(1, 1, 1);//purple
 	materialCross.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialCross.diffuseTexture = new BABYLON.Texture("textures/" + this.background + ".jpg", this.scene);
 	this.mesh[0] = new BABYLON.Mesh.CreateBox("Cross",40,this.scene);
 	this.mesh[1] = new BABYLON.Mesh.CreateBox("Cross",40,this.scene);
 	this.mesh[0].material = materialCross;
