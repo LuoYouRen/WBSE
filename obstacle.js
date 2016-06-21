@@ -1,4 +1,97 @@
-const far = 3000;
+const far = 6000;
+function Obstacles(scene,camera){
+	this.scene = scene;
+	this.camera = camera;
+	this.array = new Array();
+	this.unitArray = new Array();
+	this.rodArray = new Array();
+	this.lArray = new Array();
+	this.tArray = new Array();
+	this.crossArray = new Array();
+	
+}
+Obstacles.prototype.newObstacle = function(type){
+	var length = this.array.length;
+	switch(type){
+		case 'u':
+			this.array[length] = new UnitObstacle(0,this.scene,this.camera);
+			this.unitArray[this.unitArray.length] = this.array[length];
+		break;
+		case 'r':
+			this.array[length] = new RodObstacle(0,this.scene,this.camera);
+			this.rodArray[this.rodArray.length] = this.array[length];
+		break;
+		case 'l':
+			this.array[length] = new LObstacle(0,this.scene,this.camera);
+			this.lArray[this.lArray.length] = this.array[length];
+		break;
+		case 't':
+			this.array[length] = new TObstacle(0,this.scene,this.camera);
+			this.tArray[this.tArray.length] = this.array[length];
+		break;
+		case 'c':
+			this.array[length] = new CrossObstacle(this.scene,this.camera);
+			this.crossArray[this.crossArray.length] = this.array[length];
+		break;
+	}
+}
+Obstacles.prototype.moveAndCollision = function(){
+	for(var i = 0 ; i< this.array.length;i++){
+		this.array[i].move();
+		this.array[i].collision();
+	}
+}
+Obstacles.prototype.setPosition = function(type){
+	switch(type){
+		case 'u':
+			for(var i=0;i<this.unitArray.length;i++){
+				if(this.unitArray[i].position[2]>=0)continue;
+				else{
+					this.unitArray[i].setPosition(Math.floor(Math.random()*9));
+					break;
+				}
+			}
+		break;
+		case 'r':
+			for(var i=0;i<this.rodArray.length;i++){
+				if(this.rodArray[i].position[2]>=0)continue;
+				else{
+					this.rodArray[i].setPosition(Math.floor(Math.random()*8));
+					break;
+				}
+			}
+		break;
+		case 'l':
+			for(var i=0;i<this.lArray.length;i++){
+				if(this.lArray[i].position[2]>=0)continue;
+				else{
+					this.lArray[i].setPosition(Math.floor(Math.random()*4));
+					break;
+				}
+			}
+		break;
+		case 't':
+			for(var i=0;i<this.tArray.length;i++){
+				if(this.tArray[i].position[2]>=0)continue;
+				else{
+					this.tArray[i].setPosition(Math.floor(Math.random()*4));
+					break;
+				}
+			}
+		break;
+		case 'c':
+			for(var i=0;i<this.crossArray.length;i++){
+				if(this.crossArray[i].position[2]>=0)continue;
+				else{this.crossArray[i].setPosition();break;}
+			}
+		break;
+	}
+}
+Obstacles.prototype.setSpeed = function(num){
+	for(var i = 0 ; i< this.array.length;i++){
+		this.array[i].speed = num;
+	}
+}
 
 function Obstacle(scene,camera){
 	this.height = 30; //物體高度
@@ -49,7 +142,7 @@ Obstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 Obstacle.prototype.effect = function(){
-	console.log(this.position);
+	console.log(this);
 	this.collisionSound.play();
 }
 //只佔一個格子的物件
