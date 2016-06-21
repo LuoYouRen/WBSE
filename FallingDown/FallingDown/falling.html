@@ -56,13 +56,13 @@
 			.c1	{text-align:center;
 					font-size:46px;
 					position:relative;
-					top:-120px;
+					top:-115px;
 					color:white;
 					}
 			.c2	{text-align:center;
 					font-size:46px;
 					position:relative;
-					top:-115px;
+					top:-105px;
 					color:white;
 					}
 			.c3	{text-align:center;
@@ -96,7 +96,6 @@
 					position:relative;
 					right:180px;
 					top:-420px;}
-			.text2{font-size:32px;}
 		</style>
 		<script>
 			var p = 0;
@@ -136,9 +135,9 @@
 		</div>
 		</div>
 		<div class = "text1">
-			<p class = "c0"><a onmouseover ="change(0)" onmouseout = "change2(0)">Start</a></p>
+			<p class = "c0"><a href =""  onmouseover ="change(0)" onmouseout = "change2(0)">Start</a></p>
 			<p class = "c1"><a onmouseover ="change(1)" onmouseout = "change2(1)">Rule</a></p>
-			<p class = "c2"><a  onmouseover ="change(2)" onmouseout = "change2(2)">Rank</a></p>
+			<p class = "c2"><a  onmouseover ="change(2)" onmouseout = "change2(2)">Place</a></p>
 		</div>
 		
 		<div class = "text2">
@@ -146,7 +145,7 @@
 			<p class = "c4"><a href="FallingServlet?map=2" onmouseover ="change3(4)" onmouseout = "change4(4)">
 elevator</a></p>
 			<p class = "c5"><a href="FallingServlet?map=3" onmouseover ="change3(5)" onmouseout = "change4(5)">
-abyss</a></p>
+canyon</a></p>
 		</div>
 		
 		<img src = "箭頭.png" class = "arrow">
@@ -177,22 +176,13 @@ abyss</a></p>
             return false;
          });
 		
-		$(".c0").on( 'click', function () {
+		$(".c2").on( 'click', function () {
 			$(document).ready(function(){
 								$(".c").hide();
 								$(".text1").hide();
 								$(".c").show();
 								$(".text2").show();})
 								num2=1;
-		})
-		$(".c1").on( 'click', function () {
-							reset();
-							alertify.confirm("<p class ='text2'>遊戲操作:<br>wasd操作方向<br>分數計算:<br>根據掉下去的距離越長<br>所累積的分數越多,最後<br>分數會計入排行榜內,和<br>FB的好友一同較勁高下", function (e) {
-							if (e) {
-								alertify.success("閱讀完畢");
-							}
-							});
-								return false;
 		})
 		$(".c3").on( 'click', function () {
 			$(document).ready(function(){
@@ -233,7 +223,7 @@ abyss</a></p>
 					}
 					else if(num==1){
 							reset();
-							alertify.confirm("<p class ='text2'>遊戲操作:<br>wasd操作方向<br>分數計算:<br>根據掉下去的距離越長<br>所累積的分數越多,最後<br>分數會計入排行榜內,和<br>FB的好友一同較勁高下", function (e) {
+							alertify.confirm("", function (e) {
 							if (e) {
 								alertify.success("閱讀完畢");
 							}
