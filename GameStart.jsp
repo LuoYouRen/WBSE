@@ -37,7 +37,6 @@
 		var speed = 0; 
 		var stage = ${answer};
 		var background;
-		var isCanMove = true;
 		var moveTime = 0;
 		const step = 40;
 		const move_fps= 10;
@@ -220,47 +219,40 @@
         
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
-			var box1 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
-			var box2 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
-			var box3 = new UnitObstacle(Math.floor(Math.random()*9),scene,camera);
-			var rod1 = new RodObstacle(Math.floor(Math.random()*8),scene,camera);
-			var L1 = new LObstacle(Math.floor(Math.random()*4),scene,camera);
-			var T1 = new TObstacle(Math.floor(Math.random()*4),scene,camera);
-			var cross = new CrossObstacle(scene,camera);
+			block = new Obstacles(scene,camera);
+			for(var i = 0; i < 3 ; i++){
+				block.newObstacle('u');
+				block.newObstacle('u');
+				block.newObstacle('u');
+				block.newObstacle('u');
+				block.newObstacle('r');
+				block.newObstacle('l');
+				block.newObstacle('t');
+				block.newObstacle('c');
+			}
 			scene.registerBeforeRender(function () {
 				time += 1;
-				box1.move();
-				box2.move();
-				box3.move();
-				rod1.move();
-				L1.move();
-				T1.move();
-				cross.move();
-				box1.collision();
-				rod1.collision();
-				L1.collision();
-				T1.collision();
-				cross.collision();
+				block.moveAndCollision();
 				if(time%60 == 0){					
 					if(stage == 1){
 						var whichObstacle = Math.floor(Math.random()*5);
 						switch(whichObstacle){
 							case 0:
-								box1.setPosition(Math.floor(Math.random()*9));
-								box2.setPosition(Math.floor(Math.random()*9));
-								box3.setPosition(Math.floor(Math.random()*9));
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
 							break;					
 							case 1:
-								rod1.setPosition(Math.floor(Math.random()*8));
+								block.setPosition('r');
 							break;
 							case 2:
-								T1.setPosition(Math.floor(Math.random()*4));	
+								block.setPosition('l');
 							break;
 							case 3:
-								L1.setPosition(Math.floor(Math.random()*4));
+								block.setPosition('t');
 							break;
 							case 4:
-								cross.setPosition();
+								block.setPosition('c');
 							break;
 						}
 					}
@@ -268,41 +260,53 @@
 						var whichObstacle = Math.floor(Math.random()*4);
 						switch(whichObstacle){
 							case 0:
-								box1.setPosition(Math.floor(Math.random()*9));
-								rod1.setPosition(Math.floor(Math.random()*8));
+								block.setPosition('u');
+								block.setPosition('r');
 							break;					
 							case 1:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								T1.setPosition(Math.floor(Math.random()*4));							
+								block.setPosition('r');
+								block.setPosition('t');					
 							break;
 							case 2:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								L1.setPosition(Math.floor(Math.random()*4));
+								block.setPosition('r');
+								block.setPosition('l');
 							break;
 							case 3:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								cross.setPosition();
+								block.setPosition('r');
+								block.setPosition('c');
 							break;
 						}
 					}
 					else if(stage == 3){
-						var whichObstacle = Math.floor(Math.random()*4);
+						var whichObstacle = Math.floor(Math.random()*5);
 						switch(whichObstacle){
 							case 0:
-								box1.setPosition(Math.floor(Math.random()*9));
-								rod1.setPosition(Math.floor(Math.random()*8));
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('r');
 							break;					
 							case 1:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								T1.setPosition(Math.floor(Math.random()*4));							
+								block.setPosition('r');
+								block.setPosition('t');					
 							break;
 							case 2:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								L1.setPosition(Math.floor(Math.random()*4));
+								block.setPosition('r');
+								block.setPosition('l');
 							break;
 							case 3:
-								rod1.setPosition(Math.floor(Math.random()*8));
-								cross.setPosition();
+								block.setPosition('r');
+								block.setPosition('c');
+							break;
+							case 4:
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
 							break;
 						}
 					}

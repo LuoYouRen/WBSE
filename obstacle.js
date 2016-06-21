@@ -1,4 +1,5 @@
-const far = 6000;
+const far = 3000;
+var isCanMove = true;
 function Obstacles(scene,camera){
 	this.scene = scene;
 	this.camera = camera;
@@ -237,6 +238,7 @@ UnitObstacle.prototype.collision = function(){
 //碰撞之後的效果
 UnitObstacle.prototype.effect = function(){
 	console.log(this);
+	isCanMove = false;
 	var yaw = new BABYLON.Animation("yaw", "rotation.y", 1, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
 						var keys = [];
 						keys.push({ frame: 0, value: Math.PI/64 });
@@ -252,7 +254,7 @@ UnitObstacle.prototype.effect = function(){
 						keys.push({ frame: 10,value: 0 });
 						yaw.setKeys(keys);
 						this.cam.animations.push(yaw);		
-						this.scene.beginAnimation(this.cam, 0, 11 , false , 11, function(){});
+						this.scene.beginAnimation(this.cam, 0, 11 , false , 11, function(){isCanMove=true;});
 	//this.collisionSound.play();
 }
 //棒狀障礙物
