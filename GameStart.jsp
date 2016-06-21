@@ -11,6 +11,7 @@
         <script src="http://www.babylonjs.com/cannon.js"></script>
         <script src="http://www.babylonjs.com/oimo.js"></script>
         <script src="http://www.babylonjs.com/babylon.js"></script>
+		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="obstacle.js"></script>
         <style>
             html, body {
@@ -85,7 +86,7 @@
 			//BABYLON.Scene.FOGMODE_LINEAR;
 
 			scene.fogColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-			scene.fogDensity = 0.0005;
+			scene.fogDensity = 0.0025;
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
@@ -240,6 +241,20 @@
 			}
 			scene.registerBeforeRender(function () {
 				time += 1;
+				if(heart ==2){
+					$(".heart1").css("display", "none");
+				}else if(heart == 1){
+					$(".heart1").css("display", "none");
+					$(".heart2").css("display", "none");
+				}else if(heart == 0){
+					$(".heart1").css("display", "none");
+					$(".heart2").css("display", "none");
+					$(".heart3").css("display", "none");
+				}else{
+					$(".heart1").css("display", "block");
+					$(".heart2").css("display", "block");
+					$(".heart3").css("display", "block");
+				}
 				block.moveAndCollision();
 				if(time%60 == 0){					
 					if(stage == 1){
@@ -324,8 +339,8 @@
 				plane2.material.diffuseTexture.uOffset -= speed; 
 				plane3.material.diffuseTexture.uOffset -= speed; 
 				plane4.material.diffuseTexture.uOffset -= speed; 
-				if(speed < 0.09){
-						speed += 0.001;
+				if(speed < 0.15){
+						speed += 0.003;
 				}				
 				if(camera.position.x>=step)camera.position.x=step;
 				if(camera.position.x<=-step)camera.position.x=-step;
@@ -350,9 +365,9 @@
         });
     </script>
 	<div class = "health">
-		<img src = "heart.png">
-		<img src = "heart.png"> 
-		<img src = "heart.png">
+		<img class = "heart3" src = "heart.png">
+		<img class = "heart2" src = "heart.png"> 
+		<img class = "heart1" src = "heart.png">
 	</div>
 </body>
 </html>

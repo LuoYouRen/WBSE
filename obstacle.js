@@ -1,4 +1,5 @@
-const far = 6000;
+const far = 3000;
+var heart = 3 ;
 var isCanMove = true;
 function Obstacles(scene,camera,background){
 	this.background = background;
@@ -10,7 +11,7 @@ function Obstacles(scene,camera,background){
 	this.lArray = new Array();
 	this.tArray = new Array();
 	this.crossArray = new Array();
-	this.heart = 3;
+
 }
 Obstacles.prototype.newObstacle = function(type){
 	var length = this.array.length;
@@ -44,6 +45,7 @@ Obstacles.prototype.moveAndCollision = function(){
 	}
 }
 Obstacles.prototype.setPosition = function(type){
+	if(heart == 0 )return;
 	switch(type){
 		case 'u':
 			for(var i=0;i<this.unitArray.length;i++){
@@ -105,8 +107,8 @@ Obstacles.prototype.setSpeed = function(num){
 }
 
 function Obstacle(scene,camera){
-	this.height = 30; //物體高度
-	this.speed = 60; //物體速度
+	this.height = 10; //物體高度
+	this.speed = 30; //物體速度
 	this.dir = [0,0,-1];
 	this.scene = scene;
 	this.cam = camera;
@@ -153,8 +155,8 @@ Obstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 Obstacle.prototype.effect = function(){
-	//console.log(this);
-	if(this.heart>0)this.heart--;
+	if(heart>0)heart--;
+	console.log(heart);
 	this.collisionSound.play();
 }
 //只佔一個格子的物件
@@ -208,14 +210,13 @@ UnitObstacle.prototype.setPosition = function(num){
 }
 //畫出Mesh
 UnitObstacle.prototype.draw = function(){
-	var materialBox = new BABYLON.StandardMaterial("box", this.scene);
-	materialBox.diffuseColor = new BABYLON.Color3(1.0, 1.0, 1.0);//Green
-	materialBox.specularColor = new BABYLON.Color3(0.3, 0.3, 0.3);// 0
-	materialBox.diffuseTexture = new BABYLON.Texture("textures/crate.jpg", this.scene);
-	materialBox.alpha = 0.4;
-	this.mesh = new BABYLON.Mesh.CreateBox("box",40,this.scene);
-	this.mesh.material = materialBox;
-	this.mesh.scaling =  new BABYLON.Vector3(1, 1, 0.95);
+	var materialPlane = new BABYLON.StandardMaterial("plane", this.scene);
+	materialPlane.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);//Green
+	materialPlane.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialPlane.diffuseTexture = new BABYLON.Texture("textures/fog.png", this.scene);
+	materialPlane.alpha = 0.4;
+	this.mesh = new BABYLON.Mesh.CreatePlane("plane",30,this.scene);
+	this.mesh.material = materialPlane;
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	
 	
@@ -318,14 +319,14 @@ RodObstacle.prototype.setPosition = function(num){
 	}
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	if(num<3){
-		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
+		this.mesh.scaling = new BABYLON.Vector3(10,1,1);
 	}else if(num<6){
-		this.mesh.scaling = new BABYLON.Vector3(1,6,1);
+		this.mesh.scaling = new BABYLON.Vector3(1,10,1);
 	}else if(num==6){
-		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
+		this.mesh.scaling = new BABYLON.Vector3(10,1,1);
 		this.mesh.rotation.z = Math.PI/4*3;
 	}else if(num==7){
-		this.mesh.scaling = new BABYLON.Vector3(6,1,1);
+		this.mesh.scaling = new BABYLON.Vector3(10,1,1);
 		this.mesh.rotation.z = Math.PI/4;
 	}
 }
