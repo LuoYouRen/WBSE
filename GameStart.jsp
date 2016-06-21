@@ -241,6 +241,9 @@
 			}
 			scene.registerBeforeRender(function () {
 				time += 1;
+				if(time%2 && invincible > 0){
+					invincible--;
+				}
 				if(heart ==2){
 					$(".heart1").css("display", "none");
 				}else if(heart == 1){

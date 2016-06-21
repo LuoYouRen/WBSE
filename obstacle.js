@@ -1,5 +1,6 @@
 const far = 3000;
-var heart = 3 ;
+var heart = 3;
+var invincible = 0;
 var isCanMove = true;
 function Obstacles(scene,camera,background){
 	this.background = background;
@@ -39,6 +40,13 @@ Obstacles.prototype.newObstacle = function(type){
 	}
 }
 Obstacles.prototype.moveAndCollision = function(){
+	if(heart == 0 ){
+		for(var i = 0 ; i< this.array.length;i++){
+			this.array[i].dir = [0,-100,0];
+			this.array[i].move();
+		}
+		return;
+	}
 	for(var i = 0 ; i< this.array.length;i++){
 		this.array[i].move();
 		this.array[i].collision();
@@ -155,7 +163,8 @@ Obstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 Obstacle.prototype.effect = function(){
-	if(heart>0)heart--;
+	if(heart>0 && invincible==0)heart--;
+	invincible+=2;
 	console.log(heart);
 	this.collisionSound.play();
 }
