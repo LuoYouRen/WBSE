@@ -97,6 +97,45 @@
 					right:180px;
 					top:-420px;}
 			.text2{font-size:32px;}
+			#rankTable{
+				background-image: url('board.png') ;
+				background-repeat: no-repeat;
+				position: absolute;
+				width: 800px;
+				height: 550px;
+				top: 50%;
+				left: 50%;
+				margin: -230px 0 0 -400px;
+				display: none;
+			}
+			#boardCon{
+				position: relative;
+				width: 80%;
+				height: 82%;
+				top: 5%;
+				left: 10%;
+				margin: 0;
+				overflow: auto;
+			}
+			#grades{
+				width: 100%;
+				align: center;
+				font-family: 微軟正黑體;
+				font-size: 32px;
+				font-weight: bolder;
+				color: #4C5C68;
+			}
+			#grades tr{
+				border-bottom: 2px #EFEFF0 solid; 
+			}
+			#grades td{
+				width: 20%;
+				text-align: center;
+				padding: 5px;
+			}
+			#grades img{
+				height: 80%;
+			}
 		</style>
 		<script>
 			var p = 0;
@@ -127,6 +166,18 @@
 		</script>
 	</head>
 	<body>
+		<div id="fb-root"></div>
+		<script>
+			(function(d, s, id) {
+				var js, fjs = d.getElementsByTagName(s)[0];
+				if (d.getElementById(id)) return;
+				js = d.createElement(s); js.id = id;
+				js.src = "//connect.facebook.net/zh_TW/sdk.js#xfbml=1&version=v2.6&appId=1634788660174787";
+				fjs.parentNode.insertBefore(js, fjs);
+			}(document, 'script', 'facebook-jssdk'));
+		</script>
+		<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState();" scope="public_profile,email,user_friends"></div>
+		<div class="fb-share-button" data-href="http://192.168.0.103:8080/fbTest.html" data-layout="button" data-mobile-iframe="true">分享</div>
 		<embed src="sounds/go.mp3"	hidden="true" width="0" 
 height="0" autoplay="true" loop="true"></embed>
 		<img src = "jump.png" class = "jump">
@@ -335,6 +386,82 @@ abyss</a></p>
 						$(".c5").css("color","white");
 					}
 				}
+			$(document).ready(function() {
+				$(".c2").click(function(){
+					var site = "FallingRank?need=1";
+					
+					
+					$.getJSON(site, function(result) {
+						var num = 1;
+						var con = "<div id='boardCon'><table id='grades' rules='rows'><tr><td colspan=4 style='font-size: 36px;letter-spacing:2px;'>LEADERBOARD<img id='boardClose' src='back.png' style='float:left;height:64px;cursor:pointer;'></td></tr>";
+						$.each(result, function() {
+							con += "<tr><td>No." + num + "</td><td><img src='" + this.user.imageURL + "'></td><td style='width: 40%;'>" + this.user.name +"</td><td>" + this.myGrade + "</td></tr>";
+							num ++;
+						});
+						con += "</table></div>"
+						
+						console.log("con: " + con);
+						console.log("result: " + JSON.stringify(result));
+						$("#rankTable").html(con);
+						$("#rankTable").show();
+						$("#boardClose").click(function(){
+							$("#rankTable").hide();
+						});
+					});
+					
+					
+				});
+			});
 		</script>
+		<script>
+			function statusChangeCallback(response) {
+				if (response.status === 'connected') {
+					testAPI();
+				} else if (response.status === 'not_authorized') {
+					
+				} else {
+					var site = "FallingRank?need=3";
+					$.getJSON(site, function(result) {
+						console.log('Clear result: ' + result);
+					});
+				}
+			}
+			
+			function checkLoginState() {
+				FB.getLoginStatus(function(response) {
+				  statusChangeCallback(response);
+				});
+			}
+
+			window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '{1634788660174787}',
+				cookie     : true,  // enable cookies to allow the server to access 
+									// the session
+				xfbml      : true,  // parse social plugins on this page
+				version    : 'v2.6' // use version 2.2
+			});
+			
+
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+				});
+
+			};
+			
+			function testAPI() {
+				console.log('Welcome!  Fetching your information.... ');
+				FB.api('/me', function(response) {
+					console.log('Successful: ' + JSON.stringify(response));
+					console.log('Successful login for: ' + response.name);
+					//document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
+					var site = "FallingRank?need=0&loginID=" + response.id + "&loginName=" + response.name;
+					$.getJSON(site, function(result) {
+						console.log('Login result: ' + result);
+					});
+				});
+			}
+		</script>		
+		<div id="rankTable"></div>		
 	</body>
 </html>

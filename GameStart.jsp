@@ -56,7 +56,7 @@
 				margin-top: -98.5px;				
 			}
 			.score{
-				background-image: url('board.png');
+				background-image: url('endPage.png');
 				background-repeat:no-repeat;
 				font-family: myFont1, 微軟正黑體;
 				font-size: 240px;
@@ -433,8 +433,26 @@
             scene.render();
         });
 		function showEnd(){
-			$(".score").html(Math.floor(time/100));
+			if(stage == 1){
+				score = Math.floor(time/100);
+			}else if(stage == 2){
+				score = Math.floor(time/75);
+			}else if(stage == 3){
+				score = Math.floor(time/50);
+			}
+			
+			$(".score").html(score);
 			$(".endPage").css("display", "block");
+			
+			if('${sessionScope.user["ID"]}' != null){
+				var site = "FallingRank?need=2&id=" + '${sessionScope.user["ID"]}' + "&name=" + '${sessionScope.user["name"]}' + "&score=" + score;
+				$.getJSON(site, function(result) {
+					
+				});
+			}
+			
+			
+			
 		}
 		function goHomePage(){
 			window.location = 'falling.html';			
@@ -442,6 +460,7 @@
 		function restart() {
 			heart = 3;
 			time = 0;
+			score = 0;
 			isCanMove = true;		
 			isGameEnd = false;							
 			$(".endPage").css("display", "none");	
