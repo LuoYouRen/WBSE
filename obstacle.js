@@ -197,13 +197,64 @@ UnitObstacle.prototype.setPosition = function(num){
 //畫出Mesh
 UnitObstacle.prototype.draw = function(){
 	var materialBox = new BABYLON.StandardMaterial("box", this.scene);
-	materialBox.diffuseColor = new BABYLON.Color3(0.3, 0.9, 0.3);//Green
-	materialBox.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
+	materialBox.diffuseColor = new BABYLON.Color3(1.0, 1.0, 1.0);//Green
+	materialBox.specularColor = new BABYLON.Color3(0.3, 0.3, 0.3);// 0
+	materialBox.alpha = 0.4;
 	this.mesh = new BABYLON.Mesh.CreateBox("box",40,this.scene);
 	this.mesh.material = materialBox;
+	this.mesh.scaling =  new BABYLON.Vector3(1, 1, 0.95);
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);
 	
-}	
+	
+}
+
+//雲的碰撞效果
+//碰撞的判斷
+UnitObstacle.prototype.collision = function(){
+	if(Math.abs(this.position[2] - this.cam.position.z)>this.height)return;
+	if(this.cam.position.x <= -20 && this.cam.position.y >= 20 && this.block[0]){
+		this.effect();
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20 && this.cam.position.y >= 20 && this.block[1]){
+		this.effect();
+	}else if(this.cam.position.x >= 20 && this.cam.position.y >= 20 && this.block[2]){
+		this.effect();
+	}else if(this.cam.position.x <= -20 && this.cam.position.y <= 20&& this.cam.position.y >= -20 && this.block[3]){
+		this.effect();
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20  && this.cam.position.y <= 20&& this.cam.position.y >= -20  && this.block[4]){
+		this.effect();
+	}else if(this.cam.position.x >= 20 && this.cam.position.y <= 20&& this.cam.position.y >= -20&& this.block[5]){
+		this.effect();
+	}else if(this.cam.position.x <= -20 && this.cam.position.y <= -20 && this.block[6]){
+		this.effect();
+	}else if(this.cam.position.x <= 20 &&this.cam.position.x >= -20 && this.cam.position.y <= -20 && this.block[7]){
+		this.effect();
+	}else if(this.cam.position.x >= 20 && this.cam.position.y <= -20 && this.block[8]){
+		this.effect();
+	}else{
+	}
+	
+}
+//碰撞之後的效果
+UnitObstacle.prototype.effect = function(){
+	console.log(this);
+	var yaw = new BABYLON.Animation("yaw", "rotation.y", 1, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);
+						var keys = [];
+						keys.push({ frame: 0, value: Math.PI/64 });
+						keys.push({ frame: 1, value: Math.PI/-64 });
+						keys.push({ frame: 2, value: Math.PI/64 });
+						keys.push({ frame: 3, value: Math.PI/-64 });
+						keys.push({ frame: 4, value: Math.PI/64 });
+						keys.push({ frame: 5, value: Math.PI/-64 });
+						keys.push({ frame: 6, value: Math.PI/64 });
+						keys.push({ frame: 7, value: Math.PI/-64 });
+						keys.push({ frame: 8, value: Math.PI/64 });
+						keys.push({ frame: 9, value: Math.PI/-64 });
+						keys.push({ frame: 10,value: 0 });
+						yaw.setKeys(keys);
+						this.cam.animations.push(yaw);		
+						this.scene.beginAnimation(this.cam, 0, 11 , false , 11, function(){});
+	//this.collisionSound.play();
+}
 //棒狀障礙物
 function RodObstacle(num,scene,camera){
 	Obstacle.call(this,scene,camera);
