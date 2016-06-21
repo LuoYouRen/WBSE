@@ -60,7 +60,7 @@ Obstacles.prototype.setPosition = function(type){
 				if(this.unitArray[i].position[2]>=0)continue;
 				else{
 					this.unitArray[i].setPosition(Math.floor(Math.random()*9));
-					for(var j = 0 ; j <this.unitArray.length;j++){
+					for(var j = 0 ; j <i;j++){
 						if(j==i)continue;
 						if(this.unitArray[i].position[0]==this.unitArray[j].position[0] &&
 							this.unitArray[i].position[1]==this.unitArray[j].position[1] &&
@@ -222,10 +222,10 @@ UnitObstacle.prototype.setPosition = function(num){
 //畫出Mesh
 UnitObstacle.prototype.draw = function(){
 	var materialPlane = new BABYLON.StandardMaterial("plane", this.scene);
-	materialPlane.diffuseColor = new BABYLON.Color3(0.7, 0.7, 0.7);//Green
+	materialPlane.diffuseColor = new BABYLON.Color3(0.8, 0.8, 0.8);//Green
 	materialPlane.specularColor = new BABYLON.Color3(0.0, 0.0, 0.0);// 0
 	materialPlane.diffuseTexture = new BABYLON.Texture("textures/fog.png", this.scene);
-	materialPlane.alpha = 0.4;
+	materialPlane.alpha = 0.2;
 	this.mesh = new BABYLON.Mesh.CreatePlane("plane",30,this.scene);
 	this.mesh.material = materialPlane;
 	this.mesh.position = new BABYLON.Vector3(this.position[0], this.position[1], this.position[2]);

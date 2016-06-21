@@ -288,11 +288,10 @@
             //finally, say which mesh will be collisionable
             plane1.checkCollisions = true;
 			block = new Obstacles(scene,camera,background);
-			for(var i = 0; i < 3 ; i++){
-				block.newObstacle('u');
-				block.newObstacle('u');
-				block.newObstacle('u');
-				block.newObstacle('u');
+			for(var i = 0; i < 2 ; i++){
+				for(var j=0;j<8;j++){
+					block.newObstacle('u');
+				}
 				block.newObstacle('r');
 				block.newObstacle('l');
 				block.newObstacle('t');
@@ -336,15 +335,16 @@
 				block.moveAndCollision();
 				if(time%60 == 0){					
 					if(stage == 1){
-						var whichObstacle = Math.floor(Math.random()*5);
+						
+						var whichObstacle = Math.floor(Math.random()*8);
 						switch(whichObstacle){
 							case 0:
-								block.setPosition('u');
-								block.setPosition('u');
-								block.setPosition('u');
+								block.setPosition('r');
 							break;					
 							case 1:
 								block.setPosition('r');
+								block.setPosition('u');
+								block.setPosition('u');
 							break;
 							case 2:
 								block.setPosition('l');
@@ -355,10 +355,24 @@
 							case 4:
 								block.setPosition('c');
 							break;
+							case 5:
+								block.setPosition('l');
+								block.setPosition('u');
+							break;
+							case 6:
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+							break;
+							case 7:
+								block.setPosition('r');
+								block.setPosition('r');
+							break;
+							
 						}
 					}
 					else if(stage == 2){
-						var whichObstacle = Math.floor(Math.random()*4);
+						var whichObstacle = Math.floor(Math.random()*6);
 						switch(whichObstacle){
 							case 0:
 								block.setPosition('u');
@@ -376,10 +390,23 @@
 								block.setPosition('r');
 								block.setPosition('c');
 							break;
+							case 4:
+								block.setPosition('u');
+								block.setPosition('c');
+								block.setPosition('u');
+								block.setPosition('u');
+							break;
+							case 5:
+								block.setPosition('u');
+								block.setPosition('t');	
+								block.setPosition('u');
+								block.setPosition('u');
+								block.setPosition('u');
+							break;
 						}
 					}
 					else if(stage == 3){
-						var whichObstacle = Math.floor(Math.random()*5);
+						var whichObstacle = Math.floor(Math.random()*7);
 						switch(whichObstacle){
 							case 0:
 								block.setPosition('u');
@@ -400,15 +427,27 @@
 								block.setPosition('c');
 							break;
 							case 4:
-								block.setPosition('u');
-								block.setPosition('u');
-								block.setPosition('u');
-								block.setPosition('u');
-								block.setPosition('u');
-								block.setPosition('u');
+								block.setPosition('c');
 								block.setPosition('u');
 								block.setPosition('u');
 							break;
+							case 5:
+								block.setPosition('l');
+								block.setPosition('u');
+								block.setPosition('u');
+							break;
+							case 6:
+								block.setPosition('t');
+								block.setPosition('u');
+								block.setPosition('u');
+							break;
+						}
+					}
+				}
+				if(stage == 3){
+					if(time%(20+Math.floor(Math.random()*40))==0){
+						for(var i=0;i<Math.floor(Math.random()*4);i++){
+							block.setPosition('u');
 						}
 					}
 				}				
