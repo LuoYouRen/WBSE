@@ -56,7 +56,7 @@
 		}
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
-			scene.clearColor = new BABYLON.Color3(0.005, 0.005, 0.005);
+			scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
             var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);     
 			var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 100), scene);     
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
@@ -70,7 +70,15 @@
 				music.play();			
 			});			
 			music.loop = true;	
-			
+			// Fog
+			scene.fogMode = BABYLON.Scene.FOGMODE_EXP;
+			//BABYLON.Scene.FOGMODE_NONE;
+			//BABYLON.Scene.FOGMODE_EXP;
+			//BABYLON.Scene.FOGMODE_EXP2;
+			//BABYLON.Scene.FOGMODE_LINEAR;
+
+			scene.fogColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+			scene.fogDensity = 0.001;
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
