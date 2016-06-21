@@ -14,6 +14,10 @@
 		<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
 		<script src="obstacle.js"></script>
         <style>
+			@font-face{
+				font-family: myFont1;
+				src: url(Rise.otf)
+			}
             html, body {
                 overflow: hidden;
                 width: 100%;
@@ -29,11 +33,59 @@
             }
 			.health {
 				display: block;
-				width: 201px;
+				width: 210px;
 				height: 64px;	
 				position: absolute;
 				left: 5%;
 				top: 5%;
+			}
+			.health img {
+				float: left;
+				margin: 3px;
+			}
+			.endPage {
+				display: none;
+				background-image: url('lose.png');
+				background-repeat:no-repeat;
+				width: 724px;
+				height: 100%;
+				position: absolute;
+				left: 50%;
+				top: 15%;
+				margin-left: -362px;
+				margin-top: -98.5px;				
+			}
+			.score{
+				background-image: url('board.png');
+				background-repeat:no-repeat;
+				font-family: myFont1, 微軟正黑體;
+				font-size: 240px;
+				color: black;	
+				align: center;	
+				letter-spacing: 30px;	
+				padding-left:20px;
+				text-align: center;
+				line-height: 290px;
+				position: absolute;
+				width: 550px;
+				height: 450px;
+				left: 50%;
+				top: 30%;
+				margin-left: -275px;				
+			}
+			.homePageButton {
+				position: absolute;
+				left: 20%;
+				top: 65%;
+				margin-left: -32px;
+				margin-top: -32px;				
+			}
+			.restartButton {
+				position: absolute;
+				left: 80%;
+				top: 65%;
+				margin-left: -32px;
+				margin-top: -32px;				
 			}
         </style>
     </head>
@@ -47,6 +99,9 @@
 		var stage = ${answer};
 		var background;
 		var moveTime = 0;
+		var isGameEnd = false;
+		var isMusicPlay = false;
+		var score = 0;
 		const step = 40;
 		const move_fps= 10;
 		
@@ -74,8 +129,11 @@
 			camera.keysLeft  = []; 
 			camera.keysRight = []; 		
 			var music = new BABYLON.Sound("BGM", "sounds/BGM.wav", scene, function () {		
-				music.setVolume(0.5);
-				music.play();			
+				if(!isMusicPlay){
+					music.setVolume(0.5);
+					music.play();	
+					isMusicPlay = true;
+				}											
 			});			
 			music.loop = true;	
 			// Fog
@@ -90,30 +148,31 @@
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
+				console.log(isCanMove);
 				if (evt.keyCode === 87 && isCanMove) { 				
 					move('w',scene);
-					isCanMove = false;
+				//	isCanMove = false;
 				}
 			});
 			window.addEventListener("keydown", function (evt) {
 				// Press A key to go left
 				if (evt.keyCode === 65 && isCanMove) { 
 					move('a',scene);
-					isCanMove = false;
+				//	isCanMove = false;
 				}
 			});
 			window.addEventListener("keydown", function (evt) {
 				// Press S key to go down
 				if (evt.keyCode === 83 && isCanMove) { 
 					move('s',scene);
-					isCanMove = false;
+				//	isCanMove = false;
 				}
 			});
 			window.addEventListener("keydown", function (evt) {
 				// Press D key to go right
 				if (evt.keyCode === 68 && isCanMove) { 
 					move('d',scene);
-					isCanMove = false;
+				//	isCanMove = false;
 				}
 			});
 			function move(act,scene) {
@@ -240,23 +299,39 @@
 				block.newObstacle('c');
 			}
 			scene.registerBeforeRender(function () {
-				time += 1;
+				if(!isGameEnd)time += 1;
+			//	console.log(isGameEnd);
 				if(time%2 && invincible > 0){
 					invincible--;
 				}
-				if(heart ==2){
+				if(heart == 2){
 					$(".heart1").css("display", "none");
+					plane1.material.diffuseTexture.uOffset -= speed; 
+					plane2.material.diffuseTexture.uOffset -= speed; 
+					plane3.material.diffuseTexture.uOffset -= speed; 
+					plane4.material.diffuseTexture.uOffset -= speed; 
 				}else if(heart == 1){
 					$(".heart1").css("display", "none");
 					$(".heart2").css("display", "none");
+					plane1.material.diffuseTexture.uOffset -= speed; 
+					plane2.material.diffuseTexture.uOffset -= speed; 
+					plane3.material.diffuseTexture.uOffset -= speed; 
+					plane4.material.diffuseTexture.uOffset -= speed; 
 				}else if(heart == 0){
 					$(".heart1").css("display", "none");
 					$(".heart2").css("display", "none");
 					$(".heart3").css("display", "none");
+					isGameEnd = true;			
+					isCanMove = false;					
+			//		console.log(isGameEnd);
 				}else{
 					$(".heart1").css("display", "block");
 					$(".heart2").css("display", "block");
 					$(".heart3").css("display", "block");
+					plane1.material.diffuseTexture.uOffset -= speed; 
+					plane2.material.diffuseTexture.uOffset -= speed; 
+					plane3.material.diffuseTexture.uOffset -= speed; 
+					plane4.material.diffuseTexture.uOffset -= speed; 
 				}
 				block.moveAndCollision();
 				if(time%60 == 0){					
@@ -336,12 +411,7 @@
 							break;
 						}
 					}
-				}
-
-				plane1.material.diffuseTexture.uOffset -= speed; 
-				plane2.material.diffuseTexture.uOffset -= speed; 
-				plane3.material.diffuseTexture.uOffset -= speed; 
-				plane4.material.diffuseTexture.uOffset -= speed; 
+				}				
 				if(speed < 0.15){
 						speed += 0.003;
 				}				
@@ -349,10 +419,11 @@
 				if(camera.position.x<=-step)camera.position.x=-step;
 				if(camera.position.y>=step)camera.position.y=step;
 				if(camera.position.y<=-step)camera.position.y=-step;
-			
-				
-			});
-				
+				if(isGameEnd){
+					showEnd();
+				}				
+			});		
+		
             return scene;
         }
         
@@ -361,7 +432,29 @@
         engine.runRenderLoop(function () {
             scene.render();
         });
-
+		function showEnd(){
+			$(".score").html(Math.floor(time/100));
+			$(".endPage").css("display", "block");
+		}
+		function goHomePage(){
+			window.location = 'falling.html';			
+		}
+		function restart() {
+			heart = 3;
+			time = 0;
+			isCanMove = true;		
+			isGameEnd = false;							
+			$(".endPage").css("display", "none");	
+			scene = createScene();
+		}		
+		function bigImg(x){
+			x.width = 70;
+			x.height = 70;
+		}
+		function normalImg(x){
+			x.width = 64;
+			x.height = 64;	
+		}
         // Resize
         window.addEventListener("resize", function () {
             engine.resize();
@@ -371,6 +464,11 @@
 		<img class = "heart3" src = "heart.png">
 		<img class = "heart2" src = "heart.png"> 
 		<img class = "heart1" src = "heart.png">
+	</div>
+	<div class = "endPage" >
+		<div class = "score"></div>
+		<input id = "homePageButton" class = "homePageButton" type = "image" src="goHome.png" onclick = "goHomePage();" onmouseover = "bigImg(this)" onmouseout= "normalImg(this)"/>	
+		<input id = "restartButton" class = "restartButton" type = "image" src="restart.png" onclick = "restart();" onmouseover = "bigImg(this)" onmouseout= "normalImg(this)" />	
 	</div>
 </body>
 </html>

@@ -165,8 +165,9 @@ Obstacle.prototype.collision = function(){
 Obstacle.prototype.effect = function(){
 	if(heart>0 && invincible==0)heart--;
 	invincible+=2;
-	console.log(heart);
-	this.collisionSound.play();
+//	console.log(heart);
+	if(heart>=1)	this.collisionSound.play();
+	else if(heart<1)this.collisionSound2.play();
 }
 //只佔一個格子的物件
 function UnitObstacle(num,scene,camera){
@@ -181,7 +182,8 @@ UnitObstacle.prototype.setBlock = function(num){
 	this.block = [false,false,false,false,false,false,false,false,false];
 	this.block[num]=true;
 	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
-	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound2 = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 }
 //決定座標
 UnitObstacle.prototype.setPosition = function(num){ 
@@ -284,7 +286,8 @@ function RodObstacle(num,scene,camera,background){
 	this.setBlock(num);
 	this.draw(num);
 	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
-	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound2 = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 	//this.setPosition(num);
 }
 RodObstacle.prototype = new Obstacle(); //繼承
@@ -391,7 +394,8 @@ function LObstacle(num,scene,camera,background){
 	this.setBlock(num);
 	this.mesh = new Array(2);
 	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
-	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound2 = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 	this.position=[-40,0,-50];
 	this.position_=[0,40,-50];
 	this.draw();
@@ -486,7 +490,8 @@ function TObstacle(num,scene,camera,background){
 	this.setBlock(num);
 	this.mesh = new Array(2);
 	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
-	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound2 = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 	this.position=[-40,0,-50];
 	this.position_=[0,40,-50];
 	this.draw();
@@ -580,7 +585,8 @@ function CrossObstacle(scene,camera,background){
 	this.setBlock();
 	this.mesh = new Array(2);
 	this.passSound = new BABYLON.Sound("pass", "sounds/pass.wav", this.scene, null, { loop: false, autoplay: false });
-	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound = new BABYLON.Sound("collision", "sounds/collision.wav", this.scene, null, { loop: false, autoplay: false });
+	this.collisionSound2 = new BABYLON.Sound("collision", "sounds/collision2.wav", this.scene, null, { loop: false, autoplay: false });
 	this.position=[0,0,-50];
 	this.position_=[0,0,-50];
 	this.draw();
