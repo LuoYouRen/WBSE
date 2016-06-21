@@ -56,13 +56,13 @@
 			.c1	{text-align:center;
 					font-size:46px;
 					position:relative;
-					top:-120px;
+					top:-115px;
 					color:white;
 					}
 			.c2	{text-align:center;
 					font-size:46px;
 					position:relative;
-					top:-115px;
+					top:-105px;
 					color:white;
 					}
 			.c3	{text-align:center;
@@ -96,7 +96,6 @@
 					position:relative;
 					right:180px;
 					top:-420px;}
-			.text2{font-size:32px;}
 		</style>
 		<script>
 			var p = 0;
@@ -185,15 +184,6 @@ abyss</a></p>
 								$(".text2").show();})
 								num2=1;
 		})
-		$(".c1").on( 'click', function () {
-							reset();
-							alertify.confirm("<p class ='text2'>遊戲操作:<br>wasd操作方向<br>分數計算:<br>根據掉下去的距離越長<br>所累積的分數越多,最後<br>分數會計入排行榜內,和<br>FB的好友一同較勁高下", function (e) {
-							if (e) {
-								alertify.success("閱讀完畢");
-							}
-							});
-								return false;
-		})
 		$(".c3").on( 'click', function () {
 			$(document).ready(function(){
 								$(".c").hide();
@@ -233,7 +223,7 @@ abyss</a></p>
 					}
 					else if(num==1){
 							reset();
-							alertify.confirm("<p class ='text2'>遊戲操作:<br>wasd操作方向<br>分數計算:<br>根據掉下去的距離越長<br>所累積的分數越多,最後<br>分數會計入排行榜內,和<br>FB的好友一同較勁高下", function (e) {
+							alertify.confirm("", function (e) {
 							if (e) {
 								alertify.success("閱讀完畢");
 							}
