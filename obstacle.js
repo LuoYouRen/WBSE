@@ -1,4 +1,4 @@
-const far = 3000;
+const far = 6000;
 var isCanMove = true;
 function Obstacles(scene,camera){
 	this.scene = scene;

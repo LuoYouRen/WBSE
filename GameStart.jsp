@@ -26,6 +26,14 @@
                 height: 100%;
                 touch-action: none;
             }
+			.health {
+				display: block;
+				width: 201px;
+				height: 64px;	
+				position: absolute;
+				left: 5%;
+				top: 5%;
+			}
         </style>
     </head>
 <body>
@@ -55,7 +63,7 @@
 		}
         var createScene = function () {
             var scene = new BABYLON.Scene(engine);
-			scene.clearColor = new BABYLON.Color3(0.1, 0.1, 0.1);
+			scene.clearColor = new BABYLON.Color3(0.09, 0.09, 0.09);
             var light0 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 0), scene);     
 			var light1 = new BABYLON.PointLight("Omni", new BABYLON.Vector3(0, 0, 100), scene);     
             var camera = new BABYLON.FreeCamera("FreeCamera", new BABYLON.Vector3(0, 0, 0), scene); 
@@ -77,7 +85,7 @@
 			//BABYLON.Scene.FOGMODE_LINEAR;
 
 			scene.fogColor = new BABYLON.Color3(0.1, 0.1, 0.1);
-			scene.fogDensity = 0.001;
+			scene.fogDensity = 0.0005;
 		
 			window.addEventListener("keydown", function (evt) {
 				// Press W key to go up
@@ -341,5 +349,10 @@
             engine.resize();
         });
     </script>
+	<div class = "health">
+		<img src = "heart.png">
+		<img src = "heart.png"> 
+		<img src = "heart.png">
+	</div>
 </body>
 </html>

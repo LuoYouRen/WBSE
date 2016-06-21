@@ -127,7 +127,6 @@
 		</script>
 	</head>
 	<body>
-		<embed src="sounds/go.mp3" autostart=true hidden=true>
 		<img src = "jump.png" class = "jump">
 		<div class = "c">
 		<div>
@@ -166,7 +165,17 @@ abyss</a></p>
                buttonFocus   : "ok"
             });
          }
-
+		 $(".c1").on( 'click', function () {
+            reset();
+				
+            alertify.confirm("", function (e) {
+               if (e) {
+                  alertify.success("閱讀完畢");
+               }
+            });
+				
+            return false;
+         });
 		
 		$(".c0").on( 'click', function () {
 			$(document).ready(function(){
