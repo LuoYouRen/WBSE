@@ -1,6 +1,7 @@
 const far = 3000;
 var heart = 3;
 var invincible = 0;
+var invincible_ = 0;
 var isCanMove = true;
 function Obstacles(scene,camera,background){
 	this.background = background;
@@ -261,6 +262,8 @@ UnitObstacle.prototype.collision = function(){
 }
 //碰撞之後的效果
 UnitObstacle.prototype.effect = function(){
+	if(invincible_>0)return;
+	invincible_+=2;
 	//console.log(this);
 	isCanMove = false;
 	var yaw = new BABYLON.Animation("yaw", "rotation.y", 1, BABYLON.Animation.ANIMATIONTYPE_FLOAT, BABYLON.Animation.ANIMATIONLOOPMODE_CYCLE);

@@ -304,6 +304,9 @@
 				if(time%2 && invincible > 0){
 					invincible--;
 				}
+				if(time%2 && invincible_ > 0){
+					invincible_--;
+				}
 				if(heart == 2){
 					$(".heart1").css("display", "none");
 					plane1.material.diffuseTexture.uOffset -= speed; 
