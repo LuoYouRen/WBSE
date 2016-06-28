@@ -53,13 +53,13 @@ public class FallingRank extends HttpServlet {
 					response.getWriter().println(result);
 				}
 				else{
+					session.removeAttribute("user");
 					session.setAttribute("user", user);
 					String result = "{\"result\":\"OK\"}";
 					response.getWriter().println(result);
 				}
 			}
 			
-			System.out.println(user);
 		}
 		
 		else if(num.equals("1")){
@@ -67,7 +67,7 @@ public class FallingRank extends HttpServlet {
 			String s = gson.toJson(glist);
 			response.getWriter().println(s);
 		}
-		else if(num.equals("2")){
+		else{
 			String id = new String(request.getParameter("id").getBytes("ISO-8859-1"), "UTF-8");
 			String name = new String(request.getParameter("name").getBytes("ISO-8859-1"), "UTF-8");
 			String score = new String(request.getParameter("score").getBytes("ISO-8859-1"), "UTF-8");
@@ -76,16 +76,9 @@ public class FallingRank extends HttpServlet {
 				synchronized(rFile){
 					rFile.addGrade(g, glist);
 				}
+				String result = "{\"result\":\"OK\"}";
+				response.getWriter().println(result);
 			}
-						
-		}
-		else{
-			if(session.getAttribute("user") != null){
-				session.Remove("user");
-			}
-				
-			String result = "{\"result\":\"clear\"}";
-			response.getWriter().println(result);		
 		}
 		
 	}

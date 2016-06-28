@@ -7,6 +7,7 @@
 		<link href="alertify.default.css" rel="stylesheet" id = "toggleCSS"> 
 		<script src = "jquery-1.9.1.js"></script>
 		<script src="alertify.min.js"></script> 
+		<script src="http://connect.facebook.net/zh_TW/all.js"></script>
 		<style>
 			@font-face{
 						font-family:rise;
@@ -164,6 +165,59 @@
 					}
 				});
 		</script>
+		<script>
+			var userID = "";
+			var userName = "";
+			function statusChangeCallback(response) {
+				if (response.status === 'connected') {
+					testAPI();
+				} else if (response.status === 'not_authorized') {
+					var site = "FallingRank?need=0&loginID=QQ&loginName=QQ";
+					$.getJSON(site, function(result) {
+						
+					});
+				} else {
+					var site = "FallingRank?need=0&loginID=QQ&loginName=QQ";
+					$.getJSON(site, function(result) {
+						
+					});
+				}
+			}
+			
+			function checkLoginState() {
+				FB.getLoginStatus(function(response) {
+				  statusChangeCallback(response);
+				});
+			}
+
+			window.fbAsyncInit = function() {
+			FB.init({
+				appId      : '{1634788660174787}',
+				cookie     : true,  // enable cookies to allow the server to access 
+									// the session
+				xfbml      : true,  // parse social plugins on this page
+				version    : 'v2.6' // use version 2.2
+			});
+			
+
+			FB.getLoginStatus(function(response) {
+				statusChangeCallback(response);
+				});
+
+			};
+			
+			function testAPI() {
+				FB.api('/me', function(response) {
+					
+					var site = "FallingRank?need=0&loginID=" + response.id + "&loginName=" + response.name;
+					$.getJSON(site, function(result) {
+						
+					});
+					console.log('Successful login for: ' + response.name);
+					
+				});
+			}
+		</script>
 	</head>
 	<body>
 		<div id="fb-root"></div>
@@ -177,7 +231,6 @@
 			}(document, 'script', 'facebook-jssdk'));
 		</script>
 		<div class="fb-login-button" data-max-rows="1" data-size="large" data-show-faces="false" data-auto-logout-link="true" onlogin="checkLoginState();" scope="public_profile,email,user_friends"></div>
-		<div class="fb-share-button" data-href="http://192.168.0.103:8080/fbTest.html" data-layout="button" data-mobile-iframe="true">分享</div>
 		<embed src="sounds/go.mp3"	hidden="true" width="0" 
 height="0" autoplay="true" loop="true"></embed>
 		<img src = "jump.png" class = "jump">
@@ -218,18 +271,6 @@ abyss</a></p>
                buttonFocus   : "ok"
             });
          }
-		 $(".c1").on( 'click', function () {
-            reset();
-				
-            alertify.confirm("", function (e) {
-               if (e) {
-                  alertify.success("閱讀完畢");
-               }
-            });
-				
-            return false;
-         });
-		
 		$(".c0").on( 'click', function () {
 			$(document).ready(function(){
 								$(".c").hide();
@@ -387,6 +428,7 @@ abyss</a></p>
 					}
 				}
 			$(document).ready(function() {
+				//checkLoginState();
 				$(".c2").click(function(){
 					var site = "FallingRank?need=1";
 					
@@ -400,8 +442,6 @@ abyss</a></p>
 						});
 						con += "</table></div>"
 						
-						console.log("con: " + con);
-						console.log("result: " + JSON.stringify(result));
 						$("#rankTable").html(con);
 						$("#rankTable").show();
 						$("#boardClose").click(function(){
@@ -413,55 +453,7 @@ abyss</a></p>
 				});
 			});
 		</script>
-		<script>
-			function statusChangeCallback(response) {
-				if (response.status === 'connected') {
-					testAPI();
-				} else if (response.status === 'not_authorized') {
-					
-				} else {
-					var site = "FallingRank?need=3";
-					$.getJSON(site, function(result) {
-						console.log('Clear result: ' + result);
-					});
-				}
-			}
-			
-			function checkLoginState() {
-				FB.getLoginStatus(function(response) {
-				  statusChangeCallback(response);
-				});
-			}
-
-			window.fbAsyncInit = function() {
-			FB.init({
-				appId      : '{1634788660174787}',
-				cookie     : true,  // enable cookies to allow the server to access 
-									// the session
-				xfbml      : true,  // parse social plugins on this page
-				version    : 'v2.6' // use version 2.2
-			});
-			
-
-			FB.getLoginStatus(function(response) {
-				statusChangeCallback(response);
-				});
-
-			};
-			
-			function testAPI() {
-				console.log('Welcome!  Fetching your information.... ');
-				FB.api('/me', function(response) {
-					console.log('Successful: ' + JSON.stringify(response));
-					console.log('Successful login for: ' + response.name);
-					//document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
-					var site = "FallingRank?need=0&loginID=" + response.id + "&loginName=" + response.name;
-					$.getJSON(site, function(result) {
-						console.log('Login result: ' + result);
-					});
-				});
-			}
-		</script>		
+				
 		<div id="rankTable"></div>		
 	</body>
 </html>

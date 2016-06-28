@@ -1,5 +1,6 @@
 <%@ page contentType="text/html" pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
+<%@ page import="ntou.cs.WBSE.*"%>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
     <head>
@@ -483,10 +484,10 @@
 			$(".score").html(score);
 			$(".endPage").css("display", "block");
 			
-			if('${sessionScope.user["ID"]}' != null){
+			if('${sessionScope.user["ID"]}' != "QQ"){
 				var site = "FallingRank?need=2&id=" + '${sessionScope.user["ID"]}' + "&name=" + '${sessionScope.user["name"]}' + "&score=" + score;
 				$.getJSON(site, function(result) {
-					
+					console.log(result);
 				});
 			}
 			

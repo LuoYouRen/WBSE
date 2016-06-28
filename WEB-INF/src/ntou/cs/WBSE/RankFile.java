@@ -131,28 +131,5 @@ public class RankFile {
 		}
 		
 	}
-	
-	
-	public static void main(String[] args) {
-		
-		RankFile rFile = new RankFile("rank.txt");
-		rFile.openFile();
-		ArrayList<Grade> glist = rFile.readGrades();
-		rFile.closeFile();
-		for(Grade g : glist){
-			System.out.print(g);
-		}
-		//rFile.addGrade(new Grade("00257124", "任思堯", "120.130.0.25", 3), glist);
-		//rFile.addGrade(new Grade("00257003", "任思堯", "120.130.0.25", 9), glist);
-		//rFile.addGrade(new Grade("00257011", "任思堯", "120.130.0.25", 1), glist);
-		//rFile.addGrade(new Grade("00257077", "p p", "http://120.130.0.25", 6), glist);
-		rFile.openFile();
-		glist = rFile.readGrades();
-		System.out.println("///NEW///");
-		for(Grade g : glist){
-			System.out.print(g);
-		}
-		rFile.closeFile();
-	}
 
 }
